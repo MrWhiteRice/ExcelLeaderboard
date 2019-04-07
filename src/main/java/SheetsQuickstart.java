@@ -17,7 +17,6 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 
 //Drive API
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.Drive.Files;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
@@ -27,18 +26,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
-import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class SheetsQuickstart
 {
     private static final String APPLICATION_NAME = "EXCEL LEADERBOARD FFS";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
-
+    final static String range = "C6:F";
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    
     /**
      * Global instance of the scopes required by this quickstart.
      * If modifying these scopes, delete your previously saved tokens/ folder.
@@ -69,85 +69,33 @@ public class SheetsQuickstart
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
     
-    public static float CalcHours(List<List<Object>> values)
-    {
-    	float hours = 0;
-    	
-    	for(int x = 0; x < values.size(); x++)
-    	{
-    		List<Object> val = values.get(x);
-    		
-    		String convert = val.toString();
-    		convert = convert.substring(1, convert.length()-1);
-    		
-    		float con = 0;
-    		try
-    		{
-    			con = Float.parseFloat(convert);
-    		}
-    		catch(NumberFormatException e)
-    		{
-    			con = 0;
-    		}
-    		
-    		
-    		hours += con;
-    	}
-    	
-    	return hours/60;
-    }
-    
     public static void main(String... args) throws IOException, GeneralSecurityException
     {
-    	//Class Data!F7:F
-    	//class data = the sheet
-    	//! = spacer
-    	//F7:f = from f7 through all of f
-    	
-        // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        final String spreadsheetId = "1iFp5VTm5K12vopmJ5r8nU-3qyjmzxQ0bFkzrDZqkWYs";
-        final String range = "F6:F";
-        
+        //Date date1=formatter1.parse(sDate1); sdate1 = 12/2/2019
+
+        // Build a new authorized API client service.
         Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
-        /*ValueRange response = service.spreadsheets().values()
-                .get(spreadsheetId, range)
-                .execute();
         
-        List<List<Object>> values = response.getValues();
-        
-        System.out.println(CalcHours(values));*/
-        
-        
-        
-        
-        
-        
-        // Build a new authorized API client service.        
         Drive driveService = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
         		.setApplicationName(APPLICATION_NAME)
         		.build();
         
-        // Print the names and IDs for up to 10 files.
+        // get all the files in drive
         FileList result = driveService.files().list()
-                //.setPageSize(10)
                 .setFields("nextPageToken, files(id, name)")
                 .setQ("'1YO4j2-zK1rRh9NJxRTeueOgMD2TDvqFA' in parents")
                 .execute();
         List<File> files = result.getFiles();
-                
-        if (files == null || files.isEmpty())
+        
+        if(files != null || !files.isEmpty())
         {
-            System.out.println("No files found.");
-        }
-        else
-        {
-            System.out.println("Files:");
-            for (File file : files)
+        	//cycle through all files
+        	for(File file : files)
             {
-                System.out.printf("%s (%s)\n", file.getName(), file.getId());
+                System.out.printf("%s \n", file.getName());
                 
                 //get values
                 ValueRange response = service.spreadsheets().values()
@@ -156,8 +104,51 @@ public class SheetsQuickstart
                 
                 List<List<Object>> values = response.getValues();
                 
-                System.out.println(CalcHours(values));
+                System.out.println(GetTotalTime(values));
             }
         }
+    }
+    
+    public static float GetTotalTime(List<List<Object>> values)
+    {
+		float hours = 0;
+    	
+    	for(int x = 0; x < values.size(); x++)
+    	{
+    		List<Object> val = values.get(x);
+    		
+    		if(val.toString() == "[]")
+    		{
+    			continue;
+    		}
+    		
+    		String convert = val.toString();
+    		convert = convert.substring(1, convert.length()-1);
+    		
+    		String[] split = convert.split(", ");
+    		
+    		if(split[0].isEmpty() || split.length < 4)
+    		{
+    			continue;
+			}
+    		
+    		
+    		//0 = date
+    		//1 = start time
+    		//2 = end time
+    		//3 = total minutes
+    		//System.out.println(convert);
+    		
+    		try
+    		{
+    			hours += Float.parseFloat(split[3]);
+    		}
+    		catch(NumberFormatException e)
+    		{
+    			continue;
+    		}
+    	}
+    	
+    	return hours/60;
     }
 }
