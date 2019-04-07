@@ -33,7 +33,7 @@ import java.text.SimpleDateFormat;
 
 public class SheetsQuickstart
 {
-    private static final String APPLICATION_NAME = "EXCEL LEADERBOARD FFS";
+    private static final String APPLICATION_NAME = "EXCEL LEADERBOARD BY WHITERICE";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
     final static String range = "C6:F";
@@ -45,7 +45,7 @@ public class SheetsQuickstart
      */
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY + " " + DriveScopes.DRIVE_METADATA_READONLY);
     //private static final List<String> SCOPES_DRIVE = Collections.singletonList(DriveScopes.DRIVE_METADATA_READONLY);
-    private static final String CREDENTIALS_FILE_PATH = "client_secret_703587737148-ko5v1p4f27k6dj02l2p77o096j849g8f.apps.googleusercontent.com.json";
+    private static final String CREDENTIALS_FILE_PATH = "credentials.json";
 
     /**
      * Creates an authorized Credential object.
