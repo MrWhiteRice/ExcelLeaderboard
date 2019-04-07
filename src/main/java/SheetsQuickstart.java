@@ -71,8 +71,8 @@ public class SheetsQuickstart
     
     public static void main(String... args) throws IOException, GeneralSecurityException
     {
-    	GraphWindow win = new GraphWindow();
-        win.launchFrame();
+    	//GraphWindow win = new GraphWindow();
+        //win.launchFrame();
     	
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         //Date date1=formatter1.parse(sDate1); sdate1 = 12/2/2019
