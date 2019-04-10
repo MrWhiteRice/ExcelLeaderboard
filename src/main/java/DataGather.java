@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
 import com.google.api.services.drive.model.File;
@@ -10,10 +11,14 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 public class DataGather
 {
     final static String range = "C6:F";
+    boolean running;
     
-	public static void GetData(JTextArea ta) throws IOException, GeneralSecurityException
+	public static void GetData(JTextArea ta, JFrame f) throws IOException, GeneralSecurityException
 	{
-        //Date date1=formatter1.parse(sDate1); sdate1 = 12/2/2019
+		
+		
+		ta.setText("");
+		//Date date1=formatter1.parse(sDate1); sdate1 = 12/2/2019
 		
 		//get all the files in the drive
         List<File> files = Main.files.getFiles();
@@ -21,18 +26,30 @@ public class DataGather
         if(files != null || !files.isEmpty())
         {
         	//cycle through all files
-        	for(File file : files)
+        	for(int x = 0; x < files.size(); x++)
             {
+        		String finalText = "";
+        		if(x != files.size()-1)
+        		{
+        			finalText = " \n";
+        		}
+        		
                 //get values
                 ValueRange response = Main.sheets.spreadsheets().values()
-                        .get(file.getId(), range)
+                        .get(files.get(x).getId(), range)
                         .execute();
                 
                 List<List<Object>> values = response.getValues();
                 
-                String text = file.getName() + ": " + GetTotalTime(values) + " Hours \n";
+                String text = files.get(x).getName() + ": " + GetTotalTime(values) + " Hours" + finalText;
                 ta.setText(ta.getText() + text);
+                System.out.println(text);
+                
+                f.repaint();
+                f.pack();
             }
+        	
+        	System.out.println("Done!");
         }
 	}
 	
