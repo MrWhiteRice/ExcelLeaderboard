@@ -4,3 +4,4 @@
 # Ignore Gradle build output directory
 build
 bin/main/credentials.json
+tokens/StoredCredential
