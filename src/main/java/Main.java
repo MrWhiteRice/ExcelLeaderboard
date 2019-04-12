@@ -5,6 +5,8 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.auth.oauth2.Credential;
@@ -81,7 +83,34 @@ public class Main
                 .setQ("'1YO4j2-zK1rRh9NJxRTeueOgMD2TDvqFA' in parents")
                 .execute();
         
-    	GraphWindow win = new GraphWindow();
-        win.launchFrame();
+        SwingUtilities.invokeLater(new Runnable()
+        {
+        	@Override
+        	public void run()
+        	{
+            	GraphWindow win = null;
+				try
+				{
+					win = new GraphWindow();
+				}
+				catch(IOException | GeneralSecurityException e){}
+				
+        		win.launchFrame();
+        	}
+        });
+        
+        GatherData();
+    }
+    
+    public static void GatherData()
+    {
+    	try
+		{
+			DataGather.GetData();
+		}catch(IOException | GeneralSecurityException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }

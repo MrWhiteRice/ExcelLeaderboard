@@ -11,12 +11,9 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 public class DataGather
 {
     final static String range = "C6:F";
-    boolean running;
     
-	public static void GetData(JTextArea ta, JFrame f) throws IOException, GeneralSecurityException
+    public static void GetData(JTextArea ta, JFrame f) throws IOException, GeneralSecurityException
 	{
-		
-		
 		ta.setText("");
 		//Date date1=formatter1.parse(sDate1); sdate1 = 12/2/2019
 		
@@ -53,6 +50,39 @@ public class DataGather
         }
 	}
 	
+    public static void GetData() throws IOException, GeneralSecurityException
+	{
+		//Date date1=formatter1.parse(sDate1); sdate1 = 12/2/2019
+		
+		//get all the files in the drive
+        List<File> files = Main.files.getFiles();
+        
+        if(files != null || !files.isEmpty())
+        {
+        	//cycle through all files
+        	for(int x = 0; x < files.size(); x++)
+            {
+        		String finalText = "";
+        		if(x != files.size()-1)
+        		{
+        			finalText = " \n";
+        		}
+        		
+                //get values
+                ValueRange response = Main.sheets.spreadsheets().values()
+                        .get(files.get(x).getId(), range)
+                        .execute();
+                
+                List<List<Object>> values = response.getValues();
+                
+                String text = files.get(x).getName() + ": " + GetTotalTime(values) + " Hours" + finalText;
+                System.out.println(text);
+            }
+        	
+        	System.out.println("Done!");
+        }
+	}
+    
 	public static float GetTotalTime(List<List<Object>> values)
     {
 		float hours = 0;

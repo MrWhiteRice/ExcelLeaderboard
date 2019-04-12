@@ -6,18 +6,16 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
 
-public class GraphWindow implements ActionListener
+public class GraphWindow
 {
-	private JFrame f; //Main frame
-	private JTextArea ta; // Text area
+	public static JFrame f; //Main frame
+	public static JTextArea ta; // Text area
     private JScrollPane sbrText; // Scroll pane for text area
     private JButton btnQuit; // Quit Program
     private JLabel wait;
@@ -46,14 +44,15 @@ public class GraphWindow implements ActionListener
         // Create Get Button
         btnQuit = new JButton("Refresh");
         btnQuit.addActionListener
-        (this
-    		/*new ActionListener()
+        (
+    		new ActionListener()
     		{
     			public void actionPerformed(ActionEvent e)
     			{
-    				GetData();
+    				System.out.println("Ping!");
+    				//GetData();
 				}
-    		}*/
+    		}
 		);
 	}
 	
@@ -89,7 +88,7 @@ public class GraphWindow implements ActionListener
         //centre location
         f.setLocationRelativeTo(null);
         
-        GetData();
+        WaitScreen();
     }
 	
 	public void WaitScreen()
@@ -110,10 +109,5 @@ public class GraphWindow implements ActionListener
 	{
 		public String[] dates;
 		public String[] times;
-	}
-
-	public void actionPerformed(ActionEvent e)
-	{
-		GetData();
 	}
 }
