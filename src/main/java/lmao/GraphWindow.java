@@ -1,10 +1,12 @@
+package lmao;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,7 +22,7 @@ public class GraphWindow
     private JButton btnQuit; // Quit Program
     private JLabel wait;
     
-    private ArrayList<StudentData> students = new ArrayList<StudentData>();
+    //private ArrayList<StudentData> students = new ArrayList<StudentData>();
         
 	public GraphWindow() throws IOException, GeneralSecurityException 
 	{
@@ -51,12 +53,14 @@ public class GraphWindow
     			{
     				System.out.println("Ping!");
     				//GetData();
+    				DataGather.restart = true;
+    				DataGather.updateDrive = true;
 				}
     		}
 		);
 	}
 	
-	void GetData()
+	/*void GetData()
 	{
 		WaitScreen();
 		
@@ -69,7 +73,7 @@ public class GraphWindow
         catch(GeneralSecurityException e){}
         
         DoneScreen();
-	}
+	}*/
 	
 	public void launchFrame() // Create Layout
 	{
@@ -93,7 +97,7 @@ public class GraphWindow
 	
 	public void WaitScreen()
 	{
-		wait.setText("Please wait while we gather the data... :)");
+		wait.setText("Please wait while we gather the data... UwU");
 		f.repaint();
 		f.pack();
 	}

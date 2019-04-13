@@ -1,3 +1,5 @@
+package lmao;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,7 +39,7 @@ public class Main
      */
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY + " " + DriveScopes.DRIVE_METADATA_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "credentials.json";
-
+    
     public static Sheets sheets;
     public static Drive drive;
     public static FileList files;
@@ -99,7 +101,11 @@ public class Main
         	}
         });
         
-        GatherData();
+        while(true)
+        {
+    		GatherData();
+        }
+        
     }
     
     public static void GatherData()
@@ -107,7 +113,8 @@ public class Main
     	try
 		{
 			DataGather.GetData();
-		}catch(IOException | GeneralSecurityException e)
+		}
+    	catch(IOException | GeneralSecurityException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
