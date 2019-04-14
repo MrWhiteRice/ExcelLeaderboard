@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 //import java.util.ArrayList;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,9 +21,9 @@ public class GraphWindow
 	public static JTextArea ta; // Text area
     private JScrollPane sbrText; // Scroll pane for text area
     private JButton btnQuit; // Quit Program
-    private JLabel wait;
+    private static JLabel wait;
     
-    //private ArrayList<StudentData> students = new ArrayList<StudentData>();
+    private ArrayList<StudentData> students = new ArrayList<StudentData>();
         
 	public GraphWindow() throws IOException, GeneralSecurityException 
 	{
@@ -60,21 +61,6 @@ public class GraphWindow
 		);
 	}
 	
-	/*void GetData()
-	{
-		WaitScreen();
-		
-		//GetData
-        try
-		{
-			DataGather.GetData(ta, f);
-		}
-        catch(IOException e){}
-        catch(GeneralSecurityException e){}
-        
-        DoneScreen();
-	}*/
-	
 	public void launchFrame() // Create Layout
 	{
 		// Close when the close button is clicked
@@ -93,18 +79,21 @@ public class GraphWindow
         f.setLocationRelativeTo(null);
         
         WaitScreen();
+        
+        DataGather.restart = true;
+		DataGather.updateDrive = true;
     }
 	
-	public void WaitScreen()
+	public static void WaitScreen()
 	{
-		wait.setText("Please wait while we gather the data... UwU");
+		wait.setText("Please wait while we gather the data... OwO");
 		f.repaint();
 		f.pack();
 	}
 	
-	public void DoneScreen()
+	public static void DoneScreen()
 	{
-		wait.setText("Thanks for waiting! :)");
+		wait.setText("Thanks for waiting! UwU");
 		f.repaint();
 		f.pack();
 	}

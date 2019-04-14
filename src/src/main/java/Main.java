@@ -43,6 +43,7 @@ public class Main
     public static Sheets sheets;
     public static Drive drive;
     public static FileList files;
+    static GraphWindow win;
     
     /**
      * Creates an authorized Credential object.
@@ -85,12 +86,14 @@ public class Main
                 .setQ("'1YO4j2-zK1rRh9NJxRTeueOgMD2TDvqFA' in parents")
                 .execute();
         
+        win = null;
+        
         SwingUtilities.invokeLater(new Runnable()
         {
         	@Override
         	public void run()
         	{
-            	GraphWindow win = null;
+            	
 				try
 				{
 					win = new GraphWindow();
@@ -104,8 +107,8 @@ public class Main
         while(true)
         {
     		GatherData();
+    		DisplayData();
         }
-        
     }
     
     public static void GatherData()
@@ -119,5 +122,10 @@ public class Main
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    public static void DisplayData()
+    {
+    	
     }
 }

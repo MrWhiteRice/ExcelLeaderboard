@@ -11,7 +11,8 @@ public class DataGather
 {
     final static String range = "C6:F";
     public static boolean restart;
-    public static boolean updateDrive = false;
+    public static boolean updateDrive;
+    public static boolean done;
 	
 	public static void GetData() throws IOException, GeneralSecurityException
 	{
@@ -24,7 +25,9 @@ public class DataGather
 		System.out.println("starting");
 		updateDrive = false;
 		restart = false;
+		done = false;
 		
+		GraphWindow.WaitScreen();
     	GraphWindow.ta.setText("");
 		//Date date1=formatter1.parse(sDate1); sdate1 = 12/2/2019
 		
@@ -64,6 +67,8 @@ public class DataGather
             }
         	
         	System.out.println("Done!");
+        	GraphWindow.DoneScreen();
+        	done = true;
         }
 	}
     
