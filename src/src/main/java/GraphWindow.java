@@ -1,4 +1,4 @@
-package lmao;
+package src.main.java;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
