@@ -2,6 +2,7 @@ package src.main.java;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.api.services.drive.model.File;
@@ -9,16 +10,16 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 
 public class DataGather
 {
-    final static String range = "C6:F";
-    public static boolean restart;
-    public static boolean updateDrive;
-    public static boolean done;
+    final String range = "C6:F";
+    public boolean restart;
+    public boolean updateDrive;
+    public boolean done;
 	
-	public static void GetData() throws IOException, GeneralSecurityException
+	public void GetData() throws IOException, GeneralSecurityException
 	{
 		if(!updateDrive)
 		{
-			System.out.println();
+			//System.out.println();
 			return;
 		}
 		
@@ -27,11 +28,11 @@ public class DataGather
 		restart = false;
 		done = false;
 		
-		GraphWindow.WaitScreen();
-    	GraphWindow.ta.setText("");
+		//GraphWindow.WaitScreen();
+    	//GraphWindow.ta.setText(""); /////FIX
 		//Date date1=formatter1.parse(sDate1); sdate1 = 12/2/2019
 		
-		//get all the files in the drive
+    	//get all the files in the drive
         List<File> files = Main.files.getFiles();
         
         if(files != null)
@@ -44,6 +45,8 @@ public class DataGather
         			System.out.println("Restarting!");
         			return;
         		}
+        		
+        		System.out.println(x);
         		
         		String finalText = "";
         		if(x != files.size()-1)
@@ -58,25 +61,31 @@ public class DataGather
                 
                 List<List<Object>> values = response.getValues();
                 
-                String text = files.get(x).getName() + ": " + GetTotalTime(values) + " Hours" + finalText;
-                GraphWindow.ta.setText(GraphWindow.ta.getText() + text);
-                System.out.println(text);
+                //GraphWindow.students.add(GetStudentData(values, files.get(x).getName()));
                 
-                GraphWindow.f.repaint();
-                GraphWindow.f.pack();
+                //String text = files.get(x).getName() + ": " + String.format("%.2f", (GraphWindow.students.get(x).totalTime/60)) + " Hours" + finalText;
+                //GraphWindow.ta.setText(GraphWindow.ta.getText() + text);
+                //System.out.println(text);
+                
+                //GraphWindow.f.repaint();
+                //GraphWindow.f.pack();
             }
         	
         	System.out.println("Done!");
-        	GraphWindow.DoneScreen();
+        	//GraphWindow.DoneScreen();
         	done = true;
         }
 	}
-    
-	public static float GetTotalTime(List<List<Object>> values)
+	
+	public StudentData GetStudentData(List<List<Object>> values, String name)
     {
-		float hours = 0;
+		String[] dates = new String[values.size()];
+		String[] startTimes = new String[values.size()];;
+		String[] endTimes = new String[values.size()];;
+		String[] times = new String[values.size()];;
+		float totalTime = 0;
     	
-    	for(int x = 0; x < values.size(); x++)
+		for(int x = 0; x < values.size(); x++)
     	{
     		List<Object> val = values.get(x);
     		
@@ -100,9 +109,14 @@ public class DataGather
     		//2 = end time
     		//3 = total minutes
     		
+    		dates[x] = split[0];
+    		startTimes[x] = split[1];
+    		endTimes[x] = split[2];
+    		times[x] = split[3];
+    		
     		try
     		{
-    			hours += Float.parseFloat(split[3]);
+    			totalTime += Float.parseFloat(split[3]);
     		}
     		catch(NumberFormatException e)
     		{
@@ -110,6 +124,6 @@ public class DataGather
     		}
     	}
     	
-    	return hours/60;
+    	return new StudentData(dates, startTimes, endTimes, times, name, dates.length, totalTime);
     }
 }

@@ -86,46 +86,32 @@ public class Main
                 .setQ("'1YO4j2-zK1rRh9NJxRTeueOgMD2TDvqFA' in parents")
                 .execute();
         
-        win = null;
+        //create window
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+            	GraphWindow win = new GraphWindow();
+            }
+        });
+        
+        
+        
+        /*win = null;
         
         SwingUtilities.invokeLater(new Runnable()
         {
         	@Override
         	public void run()
         	{
-            	
 				try
 				{
 					win = new GraphWindow();
 				}
 				catch(IOException | GeneralSecurityException e){}
 				
-        		win.launchFrame();
+        		//win.launchFrame();
         	}
-        });
-        
-        while(true)
-        {
-    		GatherData();
-    		DisplayData();
-        }
-    }
-    
-    public static void GatherData()
-    {
-    	try
-		{
-			DataGather.GetData();
-		}
-    	catch(IOException | GeneralSecurityException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-    public static void DisplayData()
-    {
-    	
+        });*/
     }
 }
